@@ -1,7 +1,8 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const {loginRoute, createUserRoute} = require("./Routes/authRoute");
+const authRoute = require("./Routes/authRoute");
+// const {loginRoute, createUserRoute} = require("./Routes/authRoute");
 
 // Define Server's port number
 const PORT = process.env.PORT || 3000;
@@ -9,17 +10,16 @@ const PORT = process.env.PORT || 3000;
 // Initialize Server 
 const app = express();
 
-// configure app
-app.use(express.urlencoded({ extended: true }))
+                                                        // configure app
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 
 // static route
 app.use(express.static(path.join(__dirname, "Home")));
 
-// handle requests
-app.post("/login", loginRoute);
-
-app.get("/authtest", createUserRoute);
-
+                                                        // handle requests
+// login user request
+app.use("/auth", authRoute);
 
 
 // Start Listening on given PORT

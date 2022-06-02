@@ -1,27 +1,27 @@
+const express = require("express");
+const bodyParser = require("body-parser");
 const { registerUser, loginUser } = require("../Utils/FirebaseAuth");
 
-exports.loginRoute = (req, res) => {
+const router = express.Router();
+
+
+router.post("/login", (req, res) => {
     const email = req.body.email;
-    const pass = req.body.password;
+    const pass = req.body.pass;
+    loginUser(email, pass, (creds) => {
+        res.json(creds.user.email);
+    }, err => res.send(err.message));
+})
 
-    if (email && pass) {
-        loginUser(email, pass, response => {
-            console.log(response);
-            res.status(202);
-        });
-    }
-};
-
-exports.createUserRoute = (req, res) => {
+router.post("/register", (req, res) => {
     const email = req.body.email;
-    const pass = req.body.password;
+    const pass = req.body.pass;
 
-    if (email && pass) {
-        registerUser(email, password, response => {
-            console.log(response);
-            res.status(202);
-        });
-    }
-};
+    registerUser(email, pass, (creds) => {
+        res.send(creds);
+    },
+        err => res.send(err.message));
 
-// module.exports = loginRoute;
+})
+
+module.exports = router;
