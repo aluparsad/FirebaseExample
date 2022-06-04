@@ -1,19 +1,14 @@
-// const firebaseApp = require("./FirebaseApp");
-const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } = require("firebase/auth");
-const firebaseApp = require("./FirebaseApp")
-
-const firebaseAuth = getAuth(firebaseApp);
-exports.firebaseAuth;
-
+const {fAuth} = require("./Modules")
+const { signInWithEmailAndPassword, createUserWithEmailAndPassword } = require("firebase/auth");
 
 exports.registerUser = (email, password, success, err) => {
-    createUserWithEmailAndPassword(firebaseAuth, email, password)
+    createUserWithEmailAndPassword(fAuth, email, password)
     .then(creds => success(creds))
     .catch(error => err(error));
 }
 
 exports.loginUser = (email, password, success, err) => {
-    signInWithEmailAndPassword(firebaseAuth, email, password)
+    signInWithEmailAndPassword(fAuth, email, password)
     .then(creds => success(creds))
     .catch(error => err(error));
 }
